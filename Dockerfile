@@ -1,4 +1,6 @@
 FROM cm2network/steamcmd
+MAINTAINER Ryan Smith <fragsoc@yusu.org>
+MAINTAINER Laura Demkowicz-Duffy <fragsoc@yusu.org>
 
 ENV CONFIG_LOC "/config"
 ENV INSTALL_LOC "/home/steam/scpserver"
@@ -34,4 +36,4 @@ RUN mkdir -p "/home/steam/.config" && \
 
 EXPOSE $PORT/udp
 WORKDIR $INSTALL_LOC
-CMD ["./LocalAdmin", "$PORT"]
+ENTRYPOINT ./LocalAdmin $PORT
