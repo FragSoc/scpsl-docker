@@ -17,7 +17,7 @@ RUN $STEAMCMDDIR/steamcmd.sh \
     +app_update $APPID validate \
     +quit
 
-FROM mono AS runner
+FROM mono:slim AS runner
 
 ENV PORT "7777"
 ENV CONFIG_LOC "/config"
@@ -26,7 +26,8 @@ ENV INSTALL_LOC "/scpserver"
 # Upgrade the system
 USER root
 RUN apt update && \
-    apt upgrade --assume-yes
+    apt upgrade --assume-yes && \
+    apt install --assume-yes curl
 
 # Setup directory structure and permissions
 RUN groupadd -r scpsl && useradd -mr -s /bin/false -g scpsl scpsl && \
