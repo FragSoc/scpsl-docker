@@ -46,4 +46,4 @@ VOLUME /config
 USER scpsl
 EXPOSE $PORT/udp
 WORKDIR $INSTALL_LOC
-ENTRYPOINT ./LocalAdmin $PORT
+CMD ./LocalAdmin $PORT
