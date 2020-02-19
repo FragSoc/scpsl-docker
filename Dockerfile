@@ -1,18 +1,16 @@
-### Builder
 FROM cm2network/steamcmd AS steambuild
 MAINTAINER Ryan Smith <fragsoc@yusu.org>
 MAINTAINER Laura Demkowicz-Duffy <fragsoc@yusu.org>
 
 ENV APPID 996560
 
-# Upgrade the system
+# Make our config and give it to the steam user
 USER root
-
-# Make our config and ensure our unprivileged steam user owns it
 RUN mkdir -p /scpserver && \
     chown steam:steam /scpserver
 
 # Install the scpsl server
+USER steam
 RUN $STEAMCMDDIR/steamcmd.sh \
     +login anonymous \
     +force_install_dir /scpserver \
@@ -30,20 +28,18 @@ USER root
 RUN apt update && \
     apt upgrade --assume-yes
 
-# Grab our server
-COPY --from=steambuild /scpserver $INSTALL_LOC
-
-# Make a user to run it and give the server + config to them
+# Setup directory structure and permissions
 RUN groupadd -r scpsl && useradd -mr -s /bin/false -g scpsl scpsl && \
-    mkdir -p "/home/scpsl/.config" $CONFIG_LOC && \
+    mkdir -p "/home/scpsl/.config" $CONFIG_LOC $INSTALL_LOC && \
     ln -s "$CONFIG_LOC" "/home/scpsl/.config/SCP Secret Laboratory" && \
     chown -R scpsl:scpsl $INSTALL_LOC $CONFIG_LOC
+COPY --chown=scpsl:scpsl --from=steambuild /scpserver $INSTALL_LOC
 
-# Make the config files a volume
+# I/O
 VOLUME /config
+EXPOSE $PORT/udp
 
 # Expose and run
 USER scpsl
-EXPOSE $PORT/udp
 WORKDIR $INSTALL_LOC
 CMD ./LocalAdmin $PORT
