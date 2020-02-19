@@ -3,6 +3,8 @@ FROM cm2network/steamcmd AS steambuild
 MAINTAINER Ryan Smith <fragsoc@yusu.org>
 MAINTAINER Laura Demkowicz-Duffy <fragsoc@yusu.org>
 
+ENV APPID 996560
+
 # Upgrade the system
 USER root
 RUN apt update && \
@@ -16,8 +18,7 @@ RUN mkdir -p /scpserver && \
 RUN $STEAMCMDDIR/steamcmd.sh \
     +login anonymous \
     +force_install_dir /scpserver \
-    +app_update 996560 \
-    +app_update 996560 validate \
+    +app_update $APPID validate \
     +quit
 
 FROM mono AS runner
