@@ -2,7 +2,7 @@ FROM cm2network/steamcmd AS steambuild
 MAINTAINER Ryan Smith <fragsoc@yusu.org>
 MAINTAINER Laura Demkowicz-Duffy <fragsoc@yusu.org>
 
-ENV APPID 996560
+ENV APPID 786920
 
 # Make our config and give it to the steam user
 USER root
