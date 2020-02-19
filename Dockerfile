@@ -34,7 +34,7 @@ RUN apt update && \
 COPY --from=steambuild /scpserver $INSTALL_LOC
 
 # Make a user to run it and give the server + config to them
-RUN useradd -m scpsl && \
+RUN groupadd -r scpsl && useradd -mr -s /bin/false -g scpsl scpsl && \
     mkdir -p "/home/scpsl/.config" $CONFIG_LOC && \
     ln -s "$CONFIG_LOC" "/home/scpsl/.config/SCP Secret Laboratory" && \
     chown -R scpsl:scpsl $INSTALL_LOC $CONFIG_LOC
