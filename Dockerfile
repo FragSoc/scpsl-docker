@@ -7,8 +7,6 @@ ENV APPID 996560
 
 # Upgrade the system
 USER root
-RUN apt update && \
-    apt upgrade --assume-yes
 
 # Make our config and ensure our unprivileged steam user owns it
 RUN mkdir -p /scpserver && \
