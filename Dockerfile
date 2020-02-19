@@ -33,16 +33,17 @@ RUN apt update && \
 # Grab our server
 COPY --from=steambuild /scpserver $INSTALL_LOC
 
-# Make a user to run it and give the server to them
+# Make a user to run it and give the server + config to them
 RUN useradd -m scpsl && \
-    chown -R scpsl:scpsl $INSTALL_LOC
-USER scpsl
+    mkdir -p "/home/scpsl/.config" $CONFIG_LOC && \
+    ln -s "$CONFIG_LOC" "/home/scpsl/.config/SCP Secret Laboratory" && \
+    chown -R scpsl:scpsl $INSTALL_LOC $CONFIG_LOC
 
-# Link the config files into a sane location
-RUN mkdir -p "/home/scpsl/.config" && \
-    ln -s "$CONFIG_LOC" "/home/scpsl/.config/SCP Secret Laboratory"
+# Make the config files a volume
+VOLUME /config
 
 # Expose and run
+USER scpsl
 EXPOSE $PORT/udp
 WORKDIR $INSTALL_LOC
 ENTRYPOINT ./LocalAdmin $PORT
