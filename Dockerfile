@@ -1,10 +1,9 @@
-FROM cm2network/steamcmd
+### Builder
+FROM cm2network/steamcmd AS steambuild
 MAINTAINER Ryan Smith <fragsoc@yusu.org>
 MAINTAINER Laura Demkowicz-Duffy <fragsoc@yusu.org>
 
-ENV CONFIG_LOC "/config"
-ENV INSTALL_LOC "/home/steam/scpserver"
-ENV PORT "7777"
+ENV INSTALL_LOC "/scpserver"
 
 # Upgrade the system
 # Install gdb because scp has some unlisted dependency that it shares with gdb
@@ -16,11 +15,8 @@ RUN apt update && \
     apt install --assume-yes gdb
 
 # Make our config and ensure our unprivileged steam user owns it
-RUN mkdir -p $CONFIG_LOC && \
-    chown steam:steam $CONFIG_LOC
-
-USER steam
-WORKDIR /home/steam
+RUN mkdir -p $CONFIG_LOC $INSTALL_LOC && \
+    chown steam:steam $CONFIG_LOC $INSTALL_LOC
 
 # Install the scpsl server
 RUN $STEAMCMDDIR/steamcmd.sh \
@@ -30,9 +26,24 @@ RUN $STEAMCMDDIR/steamcmd.sh \
     +app_update 996560 validate \
     +quit
 
+FROM mono AS runner
+
+ENV PORT "7777"
+ENV CONFIG_LOC "/config"
+ENV INSTALL_LOC "/scpserver"
+
+USER root
+
+COPY --from=steambuild $INSTALL_LOC $INSTALL_LOC
+
+RUN useradd -m scpsl && \
+    chown -R scpsl:scpsl $INSTALL_LOC
+
+USER scpsl
+
 # Link the config files into a sane location
-RUN mkdir -p "/home/steam/.config" && \
-    ln -s "$CONFIG_LOC" "/home/steam/.config/SCP Secret Laboratory"
+RUN mkdir -p "/home/scpsl/.config" && \
+    ln -s "$CONFIG_LOC" "/home/scpsl/.config/SCP Secret Laboratory"
 
 EXPOSE $PORT/udp
 WORKDIR $INSTALL_LOC
