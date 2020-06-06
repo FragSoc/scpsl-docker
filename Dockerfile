@@ -6,9 +6,9 @@ ARG APPID=996560
 
 # Make our config and give it to the steam user
 USER root
-    
+
 # Install the scpsl server
-RUN mkdir -p /scpserver 
+RUN mkdir -p /scpserver
 RUN steamcmd \
     +login anonymous \
     +force_install_dir /scpserver \
@@ -17,7 +17,8 @@ RUN steamcmd \
 
 FROM mono AS runner
 
-ARG PORT="7777"
+ARG PORT=7777
+ARG UID=999
 
 ENV CONFIG_LOC "/config"
 ENV INSTALL_LOC "/scpserver"
@@ -28,7 +29,7 @@ RUN apt update && \
     apt upgrade --assume-yes
 
 # Setup directory structure and permissions
-RUN useradd -m -s /bin/false scpsl && \
+RUN useradd -m -s /bin/false -u $UID scpsl && \
     mkdir -p "/home/scpsl/.config/SCP Secret Laboratory/config" $CONFIG_LOC $INSTALL_LOC && \
     ln -s $CONFIG_LOC "/home/scpsl/.config/SCP Secret Laboratory/config/$PORT" && \
     chown -R scpsl:scpsl $INSTALL_LOC $CONFIG_LOC
