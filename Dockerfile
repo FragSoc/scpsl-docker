@@ -17,12 +17,12 @@ RUN steamcmd \
 
 FROM mono AS runner
 
-ARG PORT=7777
+ARG GAME_PORT=7777
 ARG UID=999
 
 ENV CONFIG_LOC "/config"
 ENV INSTALL_LOC "/scpserver"
-ENV PORT $PORT
+ENV PORT $GAME_PORT
 
 # Upgrade the system
 USER root
@@ -35,6 +35,7 @@ RUN useradd -m -s /bin/false -u $UID scpsl && \
     ln -s $CONFIG_LOC "/home/scpsl/.config/SCP Secret Laboratory/config/$PORT" && \
     chown -R scpsl:scpsl $INSTALL_LOC $CONFIG_LOC
 COPY --chown=scpsl:scpsl --from=steambuild /scpserver $INSTALL_LOC
+COPY docker-entrypoint.sh /docker-entrypoint.sh
 
 # I/O
 VOLUME /config
@@ -43,4 +44,4 @@ EXPOSE $PORT/udp
 # Expose and run
 USER scpsl
 WORKDIR $INSTALL_LOC
-ENTRYPOINT ["./LocalAdmin", "$PORT"]
+ENTRYPOINT /docker-entrypoint.sh
