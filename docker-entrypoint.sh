@@ -1,3 +1,3 @@
 #!/bin/bash
 
-"$INSTALL_LOC/LocalAdmin" "$PORT"
+"$INSTALL_LOC/LocalAdmin" "$GAME_PORT"
