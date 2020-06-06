@@ -42,4 +42,4 @@ EXPOSE $PORT/udp
 # Expose and run
 USER scpsl
 WORKDIR $INSTALL_LOC
-CMD ./LocalAdmin $PORT
+ENTRYPOINT ["$INSTALL_LOC/LocalAdmin", "$PORT"]
