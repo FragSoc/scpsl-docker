@@ -31,8 +31,8 @@ RUN apt update && \
 
 # Setup directory structure and permissions
 RUN useradd -m -s /bin/false scpsl && \
-    mkdir -p "/home/scpsl/.config" $CONFIG_LOC $INSTALL_LOC && \
-    ln -s $CONFIG_LOC "/home/scpsl/.config/SCP Secret Laboratory" && \
+    mkdir -p "/home/scpsl/.config/SCP Secret Laboratory/config" $CONFIG_LOC $INSTALL_LOC && \
+    ln -s $CONFIG_LOC "/home/scpsl/.config/SCP Secret Laboratory/config/$PORT" && \
     chown -R scpsl:scpsl $INSTALL_LOC $CONFIG_LOC
 COPY --chown=scpsl:scpsl --from=steambuild /scpserver $INSTALL_LOC
 
