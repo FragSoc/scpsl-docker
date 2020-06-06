@@ -6,11 +6,9 @@ ARG APPID=996560
 
 # Make our config and give it to the steam user
 USER root
-RUN mkdir -p /scpserver && \
-    chown steam:steam /scpserver
-
+    
 # Install the scpsl server
-USER steam
+RUN mkdir -p /scpserver 
 RUN steamcmd \
     +login anonymous \
     +force_install_dir /scpserver \
