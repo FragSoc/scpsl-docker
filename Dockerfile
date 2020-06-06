@@ -22,6 +22,7 @@ ARG UID=999
 
 ENV CONFIG_LOC "/config"
 ENV INSTALL_LOC "/scpserver"
+ENV PORT $PORT
 
 # Upgrade the system
 USER root
@@ -42,4 +43,4 @@ EXPOSE $PORT/udp
 # Expose and run
 USER scpsl
 WORKDIR $INSTALL_LOC
-ENTRYPOINT ["$INSTALL_LOC/LocalAdmin", "$PORT"]
+ENTRYPOINT ["./LocalAdmin", "$PORT"]
