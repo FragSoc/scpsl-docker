@@ -1,8 +1,8 @@
-FROM cm2network/steamcmd AS steambuild
+FROM steamcmd/steamcmd AS steambuild
 MAINTAINER Ryan Smith <fragsoc@yusu.org>
 MAINTAINER Laura Demkowicz-Duffy <fragsoc@yusu.org>
 
-ENV APPID 996560
+ARG APPID=996560
 
 # Make our config and give it to the steam user
 USER root
@@ -11,7 +11,7 @@ RUN mkdir -p /scpserver && \
 
 # Install the scpsl server
 USER steam
-RUN $STEAMCMDDIR/steamcmd.sh \
+RUN steamcmd \
     +login anonymous \
     +force_install_dir /scpserver \
     +app_update $APPID validate \
@@ -19,7 +19,8 @@ RUN $STEAMCMDDIR/steamcmd.sh \
 
 FROM mono AS runner
 
-ENV PORT "7777"
+ARG PORT="7777"
+
 ENV CONFIG_LOC "/config"
 ENV INSTALL_LOC "/scpserver"
 
@@ -29,9 +30,9 @@ RUN apt update && \
     apt upgrade --assume-yes
 
 # Setup directory structure and permissions
-RUN groupadd -r scpsl && useradd -mr -s /bin/false -g scpsl scpsl && \
+RUN useradd -m -s /bin/false scpsl && \
     mkdir -p "/home/scpsl/.config" $CONFIG_LOC $INSTALL_LOC && \
-    ln -s "$CONFIG_LOC" "/home/scpsl/.config/SCP Secret Laboratory" && \
+    ln -s $CONFIG_LOC "/home/scpsl/.config/SCP Secret Laboratory" && \
     chown -R scpsl:scpsl $INSTALL_LOC $CONFIG_LOC
 COPY --chown=scpsl:scpsl --from=steambuild /scpserver $INSTALL_LOC
 
