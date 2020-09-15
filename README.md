@@ -2,7 +2,12 @@
     <a href="https://store.steampowered.com/app/700330/SCP_Secret_Laboratory/">
         <img width=100% src="https://steamcdn-a.akamaihd.net/steam/apps/700330/header.jpg"/>
     </a>
+    <br/>
+    <img alt="Travis (.com)" src="https://img.shields.io/travis/com/FragSoc/scpsl-docker?style=flat-square">
+    <img alt="GitHub" src="https://img.shields.io/github/license/FragSoc/barotrauma-docker?style=flat-square">
 </center>
+
+---
 
 A [Docker](https://www.docker.com/) image to run a dedicated server for [SCP: Secret Lab](https://store.steampowered.com/app/700330/SCP_Secret_Laboratory/).
 

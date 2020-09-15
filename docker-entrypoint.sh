@@ -1,3 +1,3 @@
 #!/bin/bash
 
-"$INSTALL_LOC/LocalAdmin" "$GAME_PORT"
+"$INSTALL_LOC/LocalAdmin" 7777

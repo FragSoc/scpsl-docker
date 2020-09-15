@@ -1,3 +1,4 @@
 .dockerignore
 LICENSE
 README.md
+docker_deploy.sh

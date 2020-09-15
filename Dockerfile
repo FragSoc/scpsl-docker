@@ -18,29 +18,28 @@ RUN steamcmd \
 FROM mono AS runner
 
 ARG PORT=7777
-ENV GAME_PORT $PORT
 ARG UID=999
 
-ENV CONFIG_LOC "/config"
-ENV INSTALL_LOC "/scpserver"
-ENV GAME_CONFIG_LOC "/home/scpsl/.config/SCP Secret Laboratory/config"
+ENV CONFIG_LOC="/config"
+ENV INSTALL_LOC="/scpserver"
+ENV GAME_CONFIG_LOC="/home/scpsl/.config/SCP Secret Laboratory/config"
 
 # Upgrade the system
 USER root
-RUN apt update && \
-    apt upgrade --assume-yes
+RUN apt update
+RUN apt upgrade --assume-yes
 
 # Setup directory structure and permissions
-RUN useradd -m -s /bin/false -u $UID scpsl && \
-    mkdir -p "$GAME_CONFIG_LOC" $CONFIG_LOC $INSTALL_LOC && \
-    ln -s $CONFIG_LOC "$GAME_CONFIG_LOC/$PORT" && \
-    chown -R scpsl:scpsl $INSTALL_LOC $CONFIG_LOC /home/scpsl/.config
+RUN useradd -m -s /bin/false -u $UID scpsl
+RUN mkdir -p "$GAME_CONFIG_LOC" $CONFIG_LOC $INSTALL_LOC
+RUN ln -s $CONFIG_LOC "$GAME_CONFIG_LOC/7777"
+RUN chown -R scpsl:scpsl $INSTALL_LOC $CONFIG_LOC /home/scpsl/.config
 COPY --chown=scpsl:scpsl --from=steambuild /scpserver $INSTALL_LOC
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 
 # I/O
-VOLUME /config
-EXPOSE $PORT/udp
+VOLUME $CONFIG_LOC
+EXPOSE 7777/udp
 
 # Expose and run
 USER scpsl
