@@ -16,25 +16,22 @@ A [Docker](https://www.docker.com/) image to run a dedicated server for [SCP: Se
 An example sequence could be:
 
 ```bash
-docker build -t scpsl .
-docker run -d -p 7777:7777/udp -v $PWD/scpsl_config:/config scpsl
+docker build -t scpsl https://github.com/FragSoc/scpsl-docker.git && \
+    docker run -d -p 7777:7777/udp -v $PWD/scpsl_config:/config scpsl
 ```
 
-### Volumes
-
 The image exposes one volume at `/config` for the server's configuration files.
-
-### Ports
 
 The image exposes one port, defaulting to `7777/udp` (see below).
 
 ### Build Arguments
 
-- `UID` sets the user ID value of the user the server will run under, defaults to `999`.
-  You might want to override this for easier directory permission management.
-- `GID` is the twin to `UID`, setting the primary group id of the user the server will run under, defaults to `999`.
-- `PORT` sets the port that the game will be run under.
-  **WARNING:** you must still set this in `/config/config_gamplay.txt`
+Argument Key | Default Value | Description
+---|---|---
+`UID` | `999` | Desired user ID of the user the server will run as. You might want to override this for easier directory permission management.
+`GID` | `999` | Twin to `UID`, setting the primary group id of the user.
+`APPID` | `996560` | The appid to pass to `steamcmd`. Default should be fine for the vast majority of cases.
+`PORT` | `7777` | Port that the game will be run under. **WARNING:** you must still set this in `/config/config_gamplay.txt`
 
 ## Licensing
 

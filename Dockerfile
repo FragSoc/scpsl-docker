@@ -3,6 +3,7 @@ MAINTAINER Ryan Smith <fragsoc@yusu.org>
 MAINTAINER Laura Demkowicz-Duffy <fragsoc@yusu.org>
 
 ARG APPID=996560
+ARG STEAM_BETA
 
 # Make our config and give it to the steam user
 USER root
@@ -12,7 +13,7 @@ RUN mkdir -p /scpserver && \
     steamcmd \
         +login anonymous \
         +force_install_dir /scpserver \
-        +app_update $APPID validate \
+        +app_update $APPID $STEAM_BETA validate \
         +quit
 
 FROM mono AS runner
