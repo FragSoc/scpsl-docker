@@ -30,8 +30,9 @@ Argument Key | Default Value | Description
 ---|---|---
 `UID` | `999` | Desired user ID of the user the server will run as. You might want to override this for easier directory permission management.
 `GID` | `999` | Twin to `UID`, setting the primary group id of the user.
-`APPID` | `996560` | The appid to pass to `steamcmd`. Default should be fine for the vast majority of cases.
 `PORT` | `7777` | Port that the game will be run under. **WARNING:** you must still set this in `/config/config_gamplay.txt`
+`APPID` | `996560` | The appid to pass to `steamcmd`. Default should be fine for the vast majority of cases.
+`STEAM_BETA` | | A beta string to pass to `steamcmd`. For example: `-beta mybetaname -betapassword letmein`.
 
 ## Licensing
 
