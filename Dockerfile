@@ -1,4 +1,5 @@
-FROM steamcmd/steamcmd AS steambuild
+ARG BASE_IMAGE=steamcmd/steamcmd
+FROM ${BASE_IMAGE} AS steambuild
 MAINTAINER Ryan Smith <fragsoc@yusu.org>
 MAINTAINER Laura Demkowicz-Duffy <fragsoc@yusu.org>
 
@@ -11,8 +12,8 @@ USER root
 # Install the scpsl server
 RUN mkdir -p /scpserver && \
     steamcmd \
-        +login anonymous \
         +force_install_dir /scpserver \
+        +login anonymous \
         +app_update $APPID $STEAM_BETA validate \
         +quit
 
